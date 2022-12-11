@@ -5,8 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <!-- CSS -->
-    <link rel="stylesheet" href="/webjars/bootstrap/4.3.1/dist/css/bootstrap.min.css">
-    <style>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.2.3/css/bootstrap.min.css">    <style>
         [v-cloak] {
             display: none;
         }
@@ -35,13 +34,16 @@
     </ul>
 </div>
 <!-- JavaScript -->
-<script src="/webjars/vue/2.5.16/dist/vue.min.js"></script>
-<script src="/webjars/axios/0.17.1/dist/axios.min.js"></script>
+<script src="/webjars/vue/2.6.14/dist/vue.min.js"></script>
+<script src="/webjars/axios/0.21.1/dist/axios.min.js"></script>
+<script src="/webjars/sockjs-client/1.5.1/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/2.3.4/stomp.min.js"></script>
 <script>
     var vm = new Vue({
         el: '#app',
         data: {
             room_name : '',
+            size: '',
             chatrooms: [
             ]
         },
@@ -53,12 +55,16 @@
                 axios.get('/chat/rooms').then(response => { this.chatrooms = response.data; });
             },
             createRoom: function() {
-                if("" === this.room_name) {
+                if("" === this.room_name ) {
                     alert("방 제목을 입력해 주십시요.");
+
                     return;
-                } else {
+                }
+
+                else {
                     var params = new URLSearchParams();
                     params.append("name",this.room_name);
+
                     axios.post('/chat/room', params)
                         .then(
                             response => {
